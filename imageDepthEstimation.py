@@ -28,10 +28,10 @@ if __name__ == '__main__':
     combined_image = np.hstack((left_img, right_img, color_disparity))
     combined_image = cv2.putText(combined_image, f'{highres_stereo_depth.fps} fps', (50,50), cv2.FONT_HERSHEY_SIMPLEX, 1,(255,255,255),2, cv2.LINE_AA)
 
-    cv2.imwrite("out.jpg", cobined_image)
+    cv2.imwrite("out.jpg", combined_image)
 
     cv2.namedWindow("Estimated disparity", cv2.WINDOW_NORMAL)   
-    cv2.imshow("Estimated disparity", cobined_image)
+    cv2.imshow("Estimated disparity", combined_image)
     cv2.waitKey(0)
 
     cv2.destroyAllWindows()
