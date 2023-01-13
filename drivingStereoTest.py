@@ -48,8 +48,8 @@ for left_path, right_path, depth_path in zip(left_images[:], right_images[:], de
 	combined_image = np.hstack((left_img,color_real_depth, color_depth))
 	combined_image = cv2.putText(combined_image, f'{highres_stereo_depth.fps} fps', (50,50), cv2.FONT_HERSHEY_SIMPLEX, 1,(255,255,255),2, cv2.LINE_AA)
 
-	# out.write(cobined_image)
-	cv2.imshow("Estimated depth", cobined_image)
+	# out.write(combined_image)
+	cv2.imshow("Estimated depth", combined_image)
 
 	# Press key q to stop
 	if cv2.waitKey(1) == ord('q'):
