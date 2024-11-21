@@ -36,11 +36,12 @@ class HighResStereo():
 		# construct net
 		net = HSMNet(128,config.clean, level=config.qualityLevel)
 		net = nn.DataParallel(net, device_ids=[0])
-
+		
 		if use_gpu:
 			net.cuda()
 
-		pretrained_dict = torch.load(model_path)
+    
+		pretrained_dict = torch.load(model_path, map_location=(torch.device('cuda') if use_gpu else torch.device('cpu')))
 		pretrained_dict['state_dict'] =  {k:v for k,v in pretrained_dict['state_dict'].items() if 'disp' not in k}
 		net.load_state_dict(pretrained_dict['state_dict'],strict=False)
 
@@ -48,7 +49,8 @@ class HighResStereo():
 		dry_run(net, use_gpu)
 
 		# Set disparity range
-		net = set_disparity_range(net, config)
+		net = set_disparity_range(net, config, use_gpu)
+
 
 		return net
 

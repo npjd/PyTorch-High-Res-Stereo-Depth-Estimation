@@ -6,26 +6,27 @@ from highres_stereo import HighResStereo
 from highres_stereo.utils_highres import Config, CameraConfig, draw_disparity, draw_depth, QualityLevel
 
 # Initialize video
-# cap = cv2.VideoCapture("video.mp4")
+cap = cv2.VideoCapture("video.mp4")
 
-videoUrl = 'https://youtu.be/Yui48w71SG0'
-videoPafy = pafy.new(videoUrl)
-print(videoPafy.streams)
-cap = cv2.VideoCapture(videoPafy.getbestvideo().url)
+# videoUrl = 'https://youtu.be/Yui48w71SG0'
+# videoPafy = pafy.new(videoUrl)
+# print(videoPafy.streams)
+# cap = cv2.VideoCapture(videoPafy.getbestvideo().url)
 
 config = Config(clean=-1, qualityLevel = QualityLevel.High, max_disp=128, img_res_scale=1)
-use_gpu = True
+use_gpu = False
 model_path = "models/final-768px.tar"
 
 ret, frame = cap.read()
 
 # Store baseline (m) and focal length (pixel)
 input_width = frame.shape[1]/3
-camera_config = CameraConfig(0.1, 0.5*input_width) # 90 deg. FOV
-max_distance = 5
+camera_config = CameraConfig(0.4, 0.5*input_width) # 90 deg. FOV
+max_distance = 15
 
 # Initialize model
 highres_stereo_depth = HighResStereo(model_path, config, camera_config, use_gpu)
+print("Model loaded!")
 
 cv2.namedWindow("Estimated depth", cv2.WINDOW_NORMAL)	
 while cap.isOpened():

@@ -60,8 +60,8 @@ def dry_run(model, use_gpu):
 		model.eval()
 		pred_disp,entropy = model(imgL,imgR)
 
-def set_disparity_range(model, config):
-
+def set_disparity_range(model, config, use_gpu):
+	
 	## change max disp
 	tmpdisp = int(config.max_disp*config.img_res_scale//64*64)
 	if (config.max_disp*config.img_res_scale/64*64) > tmpdisp:
@@ -69,10 +69,17 @@ def set_disparity_range(model, config):
 	else:
 		model.module.maxdisp = tmpdisp
 	if model.module.maxdisp ==64: model.module.maxdisp=128
-	model.module.disp_reg8 =  disparityregression(model.module.maxdisp,16).cuda()
-	model.module.disp_reg16 = disparityregression(model.module.maxdisp,16).cuda()
-	model.module.disp_reg32 = disparityregression(model.module.maxdisp,32).cuda()
-	model.module.disp_reg64 = disparityregression(model.module.maxdisp,64).cuda()
+
+	if use_gpu:
+		model.module.disp_reg8 =  disparityregression(model.module.maxdisp,16).cuda()
+		model.module.disp_reg16 = disparityregression(model.module.maxdisp,16).cuda()
+		model.module.disp_reg32 = disparityregression(model.module.maxdisp,32).cuda()
+		model.module.disp_reg64 = disparityregression(model.module.maxdisp,64).cuda()
+	else:	
+		model.module.disp_reg8 =  disparityregression(model.module.maxdisp,16)
+		model.module.disp_reg16 = disparityregression(model.module.maxdisp,16)
+		model.module.disp_reg32 = disparityregression(model.module.maxdisp,32)
+		model.module.disp_reg64 = disparityregression(model.module.maxdisp,64)
 
 	return model
 

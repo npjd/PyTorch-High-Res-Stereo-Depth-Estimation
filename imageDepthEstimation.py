@@ -9,7 +9,7 @@ if __name__ == '__main__':
     
     config = Config(clean=-1, qualityLevel = QualityLevel.High, max_disp=128, img_res_scale=1)
 
-    use_gpu = True
+    use_gpu = False
     model_path = "models/final-768px.tar"
 
     # Load images

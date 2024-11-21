@@ -9,15 +9,15 @@ from highres_stereo.utils_highres import Config, CameraConfig, draw_disparity, d
 # out = cv2.VideoWriter('outpy.avi',cv2.VideoWriter_fourcc('M','J','P','G'), 10, (881*3,400))
 
 # Get image list
-left_images = glob.glob('DrivingStereo images/left/*.jpg')
+left_images = glob.glob('/Users/nimapourjafar/Documents/GitHub/PyTorch-High-Res-Stereo-Depth-Estimation/DrivingStereo_demo_images/image_L/*.png')
 left_images.sort()
-right_images = glob.glob('DrivingStereo images/right/*.jpg')
+right_images = glob.glob('/Users/nimapourjafar/Documents/GitHub/PyTorch-High-Res-Stereo-Depth-Estimation/DrivingStereo_demo_images/image_R/*.png')
 right_images.sort()
-depth_images = glob.glob('DrivingStereo images/depth/*.png')
+depth_images = glob.glob('/Users/nimapourjafar/Documents/GitHub/PyTorch-High-Res-Stereo-Depth-Estimation/DrivingStereo_demo_images/disparity/*.png')
 depth_images.sort()
 
-config = Config(clean=-1, qualityLevel = QualityLevel.High, max_disp=128, img_res_scale=1)
-use_gpu = True
+config = Config(clean=-1, qualityLevel = QualityLevel.Medium, max_disp=128, img_res_scale=1)
+use_gpu = False
 model_path = "models/final-768px.tar"
 
 left_img = cv2.imread(left_images[0])
@@ -30,7 +30,7 @@ highres_stereo_depth = HighResStereo(model_path, config, camera_config, use_gpu)
 
 cv2.namedWindow("Estimated depth", cv2.WINDOW_NORMAL)	
 for left_path, right_path, depth_path in zip(left_images[:], right_images[:], depth_images[:]):
-
+	
 	# Read frame from the video
 	left_img = cv2.imread(left_path)
 	right_img = cv2.imread(right_path)
